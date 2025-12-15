@@ -10,8 +10,8 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const OLD_URL = 'https://institute-backend-wro4.onrender.com';
-const NEW_URL = 'http://localhost:5000';
+const OLD_URL = "https://frontend-mu-sepia-48.vercel.app";
+// const NEW_URL = 'http://localhost:5000';
 
 function findHardcodedUrls(dir, fileList = []) {
   const files = fs.readdirSync(dir);

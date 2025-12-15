@@ -11,10 +11,7 @@ import {
   getCurrentUserInfo,
 } from "../utils/auth";
 
-/**
- * Custom hook for authentication
- * Provides user data and auth helper functions
- */
+
 export const useAuth = () => {
   const [user, setUser] = useState(getCurrentUser());
   const [loading, setLoading] = useState(true);

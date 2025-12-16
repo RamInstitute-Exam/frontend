@@ -39,6 +39,11 @@ export default function UnifiedLogin() {
       );
 
       if (response.success) {
+        // Store authentication token (required for API requests)
+        if (response.token) {
+          localStorage.setItem("authToken", response.token);
+        }
+        
         // Store user info in localStorage
         localStorage.setItem("user", JSON.stringify(response.user));
         localStorage.setItem("userId", response.user.id);

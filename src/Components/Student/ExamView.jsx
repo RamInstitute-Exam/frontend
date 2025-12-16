@@ -237,11 +237,19 @@ const ExamViewer = () => {
   }
 
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden">
+    <div className="flex flex-col md:flex-row h-screen bg-gray-50 overflow-hidden">
+      {/* Mobile Sidebar Overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black bg-opacity-50 md:hidden transition-opacity duration-300"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+      
       {/* Sidebar - Question Navigator */}
       <div
-        className={`w-full md:w-80 bg-white border-r border-gray-200 flex flex-col ${
-          sidebarOpen ? 'block' : 'hidden md:flex'
+        className={`fixed md:static inset-y-0 left-0 z-50 w-full sm:w-80 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-300 ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
         <div className="p-4 border-b border-gray-200 bg-blue-50">
@@ -262,8 +270,8 @@ const ExamViewer = () => {
           </p>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4">
-          <div className="grid grid-cols-5 gap-3">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-4">
+          <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 sm:gap-3">
             {paginatedNumbers.map((q, idx) => {
               const qNo = q.questionNumber;
               const answered = answers[qNo];
@@ -289,7 +297,7 @@ const ExamViewer = () => {
               return (
                 <button
                   key={idx}
-                  className={`p-4 rounded-xl font-bold text-base transition-all hover:scale-110 hover:shadow-lg ${bg} ${shadow}`}
+                  className={`p-2 sm:p-4 rounded-lg sm:rounded-xl font-bold text-xs sm:text-base transition-all hover:scale-105 sm:hover:scale-110 hover:shadow-lg ${bg} ${shadow}`}
                   onClick={() => {
                     setCurrentQIndex(qNo - 1);
                     setSidebarOpen(false);
@@ -341,33 +349,34 @@ const ExamViewer = () => {
       {/* Main Question Panel */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="bg-white border-b border-gray-200 p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <div className="bg-white border-b border-gray-200 p-3 sm:p-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex items-center gap-3 sm:gap-4">
               <button
                 className="md:hidden p-2 hover:bg-gray-100 rounded-lg"
                 onClick={() => setSidebarOpen(true)}
+                aria-label="Open question navigator"
               >
                 <BookOpen className="w-5 h-5 text-gray-600" />
               </button>
-              <div>
-                <h2 className="text-xl font-bold text-gray-900">{exam?.examName || 'Exam'}</h2>
-                <p className="text-sm text-gray-500">
+              <div className="min-w-0 flex-1">
+                <h2 className="text-lg sm:text-xl font-bold text-gray-900 truncate">{exam?.examName || 'Exam'}</h2>
+                <p className="text-xs sm:text-sm text-gray-500">
                   Question {currentQIndex + 1} of {exam?.questions?.length || 0}
                 </p>
               </div>
             </div>
             {!submitted && (
-              <div className="flex items-center gap-2 px-4 py-2 bg-red-50 border border-red-200 rounded-lg">
-                <Clock className="w-5 h-5 text-red-600" />
-                <span className="text-red-600 font-bold text-lg">{formatTime(timeLeft)}</span>
+              <div className="flex items-center justify-center sm:justify-end gap-2 px-3 sm:px-4 py-2 bg-red-50 border border-red-200 rounded-lg w-full sm:w-auto">
+                <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />
+                <span className="text-red-600 font-bold text-base sm:text-lg">{formatTime(timeLeft)}</span>
               </div>
             )}
           </div>
         </div>
 
         {/* Question Content */}
-        <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-gray-50">
           {submitted ? (
             <>
               <div className="flex gap-2 mb-4 flex-wrap">
@@ -407,7 +416,7 @@ const ExamViewer = () => {
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">
                     Score: {result?.score || 0} / {exam.questions.length}
                   </h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-4">
                     <div className="text-center">
                       <p className="text-sm text-gray-500">Correct</p>
                       <p className="text-2xl font-bold text-green-600">{result?.correctCount || 0}</p>
@@ -441,7 +450,7 @@ const ExamViewer = () => {
           )}
 
           {/* Question Card */}
-          <div className="bg-white rounded-xl shadow-lg border-2 border-gray-300 p-8 mb-6">
+          <div className="bg-white rounded-xl shadow-lg border-2 border-gray-300 p-4 sm:p-6 lg:p-8 mb-4 sm:mb-6">
             <div className="mb-4">
               <div className="flex items-center gap-2 mb-3">
                 <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full font-semibold text-sm">
